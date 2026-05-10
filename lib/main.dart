@@ -1,4 +1,5 @@
 import 'package:entrenaop/core/di/injection_container.dart';
+import 'package:entrenaop/features/auth/presentation/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -22,20 +23,15 @@ class EntrenaOpApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'EntrenaOP',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFE65100),
-          brightness: Brightness.dark,
+        title: 'EntrenaOP',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xFFE65100),
+            brightness: Brightness.dark,
+          ),
+          useMaterial3: true,
         ),
-        useMaterial3: true,
-      ),
-      home: const Scaffold(
-        body: Center(
-          child: Text('EntrenaOP'),
-        ),
-      ),
-    );
+        home: const LoginPage());
   }
 }
