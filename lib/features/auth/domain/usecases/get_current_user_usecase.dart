@@ -1,0 +1,12 @@
+import 'package:entrenaop/features/auth/domain/entities/user_entity.dart';
+import 'package:entrenaop/features/auth/domain/repositories/auth_repository.dart';
+
+class GetCurrentUserUseCase {
+  final AuthRepository repository;
+
+  GetCurrentUserUseCase(this.repository);
+
+  Future<UserEntity?> call() async {
+    return await repository.getCurrentUser();
+  }
+}
