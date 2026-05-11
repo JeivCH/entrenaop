@@ -30,10 +30,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           .eq('id', user.id)
           .single();
 
-      return UserModel.fromJson({
-        ...profile,
-        'email': user.email ?? '',
-      });
+      print('Profile data: $profile');
+      print('User email: ${user.email}');
+      try {
+        final model = UserModel.fromJson({
+          ...profile,
+          'email': user.email ?? '',
+        });
+        print('Model created: ${model.id}');
+        return model;
+      } catch (e) {
+        print('fromJson error: $e');
+        throw ServerException(e.toString());
+      }
     } on AuthException catch (e) {
       throw ServerException(e.message);
     } on ServerException {
