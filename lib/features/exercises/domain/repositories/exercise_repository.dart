@@ -5,7 +5,7 @@ abstract class ExerciseRepository {
 
   //lectura
   Future<List<ExerciseEntity>> getExercises();
-  Future<List<ExerciseEntity>> getExerciseByMuscleGroup(String muscleGroup);
+  Future<List<ExerciseEntity>> getExercisesByMuscleGroup(String muscleGroup);
   Future<ExerciseEntity?> getExerciseById(String id);
 
   //escritura

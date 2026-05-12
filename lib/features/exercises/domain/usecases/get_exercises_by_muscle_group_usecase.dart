@@ -6,6 +6,6 @@ class GetExercisesByMuscleGroupUseCase {
   GetExercisesByMuscleGroupUseCase(this.repository);
 
   Future<List<ExerciseEntity>> call(String muscleGroup) async {
-    return await repository.getExerciseByMuscleGroup(muscleGroup);
+    return await repository.getExercisesByMuscleGroup(muscleGroup);
   }
 }
