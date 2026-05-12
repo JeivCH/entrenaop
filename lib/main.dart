@@ -1,6 +1,6 @@
 import 'package:entrenaop/core/di/injection_container.dart';
+import 'package:entrenaop/core/router/app_router.dart';
 import 'package:entrenaop/features/auth/presentation/bloc/auth_cubit.dart';
-import 'package:entrenaop/features/auth/presentation/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -24,19 +24,21 @@ class EntrenaOpApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'EntrenaOP',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFE65100),
-          brightness: Brightness.dark,
+    final authCubit = sl<AuthCubit>();
+
+    return BlocProvider.value(
+      value: authCubit,
+      child: MaterialApp.router(
+        title: 'EntrenaOP',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xFFE65100),
+            brightness: Brightness.dark,
+          ),
+          useMaterial3: true,
         ),
-        useMaterial3: true,
-      ),
-      home: BlocProvider(
-        create: (_) => sl<AuthCubit>(),
-        child: const LoginPage(),
+        routerConfig: createRouter(authCubit),
       ),
     );
   }
