@@ -8,18 +8,30 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<UserEntity?> getCurrentUser() async {
-    return await remoteDataSource.getCurrentUser();
+  Future<UserEntity> signIn({required String email, required String password}) async {
+    return await remoteDataSource.signIn(email: email, password: password);
   }
 
   @override
-  Future<UserEntity> signIn(
-      {required String email, required String password}) async {
-    return await remoteDataSource.signIn(email: email, password: password);
+  Future<UserEntity> signUp({
+    required String email,
+    required String password,
+    required String fullName,
+  }) async {
+    return await remoteDataSource.signUp(
+      email: email,
+      password: password,
+      fullName: fullName,
+    );
   }
 
   @override
   Future<void> signOut() async {
     return await remoteDataSource.signOut();
+  }
+
+  @override
+  Future<UserEntity?> getCurrentUser() async {
+    return await remoteDataSource.getCurrentUser();
   }
 }

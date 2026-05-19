@@ -1,4 +1,3 @@
-// features/auth/data/datasources/auth_remote_datasource_impl.dart
 import 'package:entrenaop/core/errors/exceptions.dart';
 import 'package:entrenaop/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:entrenaop/features/auth/data/models/user_model.dart';
@@ -19,30 +18,51 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         email: email,
         password: password,
       );
-
       final user = response.user;
       if (user == null) throw const ServerException('Usuario no encontrado');
 
-      // Obtenemos el perfil completo desde la tabla 'profiles'
       final profile = await supabaseClient
           .from('profiles')
           .select()
           .eq('id', user.id)
           .single();
 
-      print('Profile data: $profile');
-      print('User email: ${user.email}');
-      try {
-        final model = UserModel.fromJson({
-          ...profile,
-          'email': user.email ?? '',
-        });
-        print('Model created: ${model.id}');
-        return model;
-      } catch (e) {
-        print('fromJson error: $e');
-        throw ServerException(e.toString());
-      }
+      return UserModel.fromJson({...profile, 'email': user.email ?? ''});
+    } on AuthException catch (e) {
+      throw ServerException(e.message);
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel> signUp({
+    required String email,
+    required String password,
+    required String fullName,
+  }) async {
+    try {
+      final response = await supabaseClient.auth.signUp(
+        email: email,
+        password: password,
+        data: {'full_name': fullName},
+      );
+      final user = response.user;
+      if (user == null) throw const ServerException('Error al crear la cuenta');
+
+      // El trigger de Supabase crea el perfil automáticamente.
+      // Esperamos un momento y luego lo leemos.
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      final profile = await supabaseClient
+          .from('profiles')
+          .select()
+          .eq('id', user.id)
+          .single();
+
+      return UserModel.fromJson({...profile, 'email': user.email ?? ''});
     } on AuthException catch (e) {
       throw ServerException(e.message);
     } on ServerException {
@@ -75,10 +95,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           .eq('id', user.id)
           .single();
 
-      return UserModel.fromJson({
-        ...profile,
-        'email': user.email ?? '',
-      });
+      return UserModel.fromJson({...profile, 'email': user.email ?? ''});
     } on AuthException catch (e) {
       throw ServerException(e.message);
     } catch (e) {

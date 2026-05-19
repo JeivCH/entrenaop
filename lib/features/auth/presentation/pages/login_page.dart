@@ -293,7 +293,7 @@ class _LoginPageState extends State<LoginPage>
                                       ),
                                     ),
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () => context.go('/signup'),
                                       child: const Text(
                                         'Regístrate',
                                         style: TextStyle(

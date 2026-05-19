@@ -4,7 +4,7 @@ import 'package:entrenaop/features/exercises/domain/repositories/exercise_reposi
 class CreateExerciseUseCase {
   final ExerciseRepository repository;
 
-  CreateExerciseUseCase({required this.repository});
+  CreateExerciseUseCase(this.repository);
 
   Future<void> call(ExerciseEntity exercise) async {
     return await repository.createExercise(exercise);
