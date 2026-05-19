@@ -18,3 +18,13 @@ class ExercisesLoaded extends ExerciseState {
   @override
   List<Object?> get props => [exercises];
 }
+
+// Error — mostramos mensaje en UI
+class ExerciseError extends ExerciseState {
+  final String message;
+
+  ExerciseError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
